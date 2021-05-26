@@ -38,7 +38,7 @@ public class User implements Serializable{
     private List<Vote> votes;
 
     @ElementCollection
-
+    @OneToMany(targetEntity=Comment.class, mappedBy = "userId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Comment> comments;
 
     public User() {
@@ -108,7 +108,7 @@ public class User implements Serializable{
         this.votes = votes;
     }
     // Need to use FetchType.LAZY to resolve multiple bags exception
-    @OneToMany(targetEntity=Comment.class, mappedBy = "userId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+
     public List<Comment> getComments() {
         return comments;
     }

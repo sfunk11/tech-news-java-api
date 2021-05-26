@@ -28,13 +28,17 @@ public class User implements Serializable{
     @Transient
     boolean loggedIn;
 
-    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ElementCollection
+    @OneToMany(targetEntity=Post.class, mappedBy = "userId", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Post> posts;
 
-    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ElementCollection
+    // Need to use FetchType.LAZY to resolve multiple bags exception
+    @OneToMany(targetEntity=Vote.class, mappedBy = "userId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Vote> votes;
 
-    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ElementCollection
+
     private List<Comment> comments;
 
     public User() {
@@ -103,7 +107,8 @@ public class User implements Serializable{
     public void setVotes(List<Vote> votes) {
         this.votes = votes;
     }
-
+    // Need to use FetchType.LAZY to resolve multiple bags exception
+    @OneToMany(targetEntity=Comment.class, mappedBy = "userId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public List<Comment> getComments() {
         return comments;
     }
